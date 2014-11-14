@@ -1,0 +1,85 @@
+/*Basics - Fonts, Colours and Centering*/
+/*Radius - use of mixin for easy updating*/
+/*tags*/
+body {
+  font: 100% Helvetica, sans-serif;
+  color: #000;
+  margin: 0 auto;
+  text-align: center;
+}
+
+header h1, header h2 {
+  font: Helvetica, sans-serif;
+}
+header h1 {
+  color: #00F;
+}
+header h2 {
+  color: #CCC;
+}
+header ul {
+  list-style: none;
+}
+header li {
+  color: #F00;
+}
+
+strong {
+  color: #F00;
+}
+
+/*Links*/
+a:link {
+  color: #00F;
+}
+
+a:hover {
+  color: #CCC;
+}
+
+/*Inputs and Controls*/
+textarea {
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  border-radius: 1em;
+  border: 1px #00F solid;
+  margin: 0 auto;
+  display: block;
+  padding: 1em;
+  /*Transition*/
+  -webkit-transition: -webkit-box-shadow 0.5s ease-out;
+  -moz-transition: -moz-box-shadow 0.5s ease-out;
+  -o-transition: box-shadow 0.5s ease-out;
+}
+
+textarea:hover {
+  /*Gives blue glow around edge of box on hover*/
+  -moz-box-shadow: 0px 0px 1em #09f;
+  -webkit-box-shadow: 0px 0px 1em #09f;
+  box-shadow: 0px 0px 1em #09f;
+}
+
+button {
+  color: #00F;
+  -webkit-border-radius: 1em;
+  -moz-border-radius: 1em;
+  -ms-border-radius: 1em;
+  border-radius: 1em;
+}
+
+/*IDs*/
+#resultsTable {
+  width: 20em;
+  margin: 0 auto;
+  width: auto;
+  border-color: #00F;
+  text-align: center;
+}
+#resultsTable thead {
+  font-weight: 700;
+}
+#resultsTable th, #resultsTable td {
+  padding: .5em;
+  border: 0.1em #CCC solid;
+}

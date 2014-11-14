@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en" data-ng-app=""> <!--<![endif]-->
+<head>
+
+
+	<!-- Basic Page Info
+  ================================================== -->
+	<meta charset="utf-8">
+	<title>Responsive Word Count Application</title>
+		<meta name="description" content="Word Count Application. Full words, commas and periods are counted, numbers are not allowed.">
+		<meta name="author" content="Claudio Ricci">
+
+
+	<!-- Mobile Specific Metas Tag
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- CSS
+  ================================================== -->
+	<link rel="stylesheet" href="CSS/reset.css">
+	<link rel="stylesheet" href="CSS/framework.css">
+	<link rel="stylesheet" href="CSS/presentation.css">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+
+
+
+</head>
+<body>
+
+	<!-- Start Page Layout
+	================================================== -->
+
+    <div ng-app="WordCount" ng-controller="WordCountController">
+    	<header>
+			<h1>WORD COUNT APPLICATION</h1>
+			<h2>Instructions:</h2>
+				<ul>
+					<li>Numbers cannot be entered, only words, commas and periods.</li>
+					<li>A minimum of 5 words and a maximum of 500 words can be entered.</li>
+				</ul>			
+		</header>
+    <!--Start User input textarea here-->
+                <label for="TextEntryPanel">Enter text below:</label><br>    
+                <textarea id="TextEntryPanel" name="textArea" type="text" class="form-control letters-only" rows="10" ng-model="notesNode.text" ng-trim="false" maxlength="5000">Test</textarea>
+        <br />
+        <!--End User input textarea here--> 
+    <!--Start Counters here-->  
+        <p><strong>Word Counter:</strong> <span class="wordCount">{{notesNode.text|wordCounter}} / 500</span></p> 
+        <p><strong>Comma Counter:</strong> <span class="wordCount">{{notesNode.text|commaCounter}}</span></p>
+        <p><strong>Period Counter:</strong> <span class="wordCount">{{notesNode.text|periodCounter}}</span></p>
+        <p><strong>Character Counter:</strong> <span class="wordCount">{{notesNode.text.length}} / 5000</span></p>
+    <!--End Counters here-->
+
+    <!--<button type="button" value="Check" id="checkWordsButton">See Results</button> -->
+          <button type="button" value="Process" id="process">Process</button>
+
+    <!--Start Outputted Results Panel-->
+             <h3>Results Panel</h3>
+                <table id="resultsTable">
+                    <thead>
+                        <tr><th>Output</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td></td></tr>
+                    </tbody>
+                </table>
+                <br>
+                <button class="sort-table asc">sort ASC</button>
+                <button class="sort-table desc">sort DESC</button>
+    <!--End Outputted Results Panel-->       
+    
+		<footer>
+			<p>&copy;<a href="http://www.bt.com" target="_blank" title="Go to BT Home page">BT</a> 2014</p>
+		</footer>     
+
+    </div>
+
+	<!-- End Page Layout
+  
+
+    
+    <!-- JQuery.js call
+	================================================== -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Angular.js call
+	================================================== -->
+  
+   <script src="js/angular.min.js"></script>
+
+  
+
+
+ <!-- Angular.js module regex filters to count words, commas and periods
+	================================================== -->
+<script>
+    angular.module('WordCount', [])
+        .filter('wordCounter', function () {
+            return function (value) {
+                if (value && typeof value === 'string') {
+                    return value.trim().split(/\s+/).length;
+                } else {
+                    return 0;
+                }
+            };
+        })
+        .filter('commaCounter', function () {
+            return function (value) {
+                if (value && typeof value === 'string') {
+                    return value.trim().split(",").length;
+                } else {
+                    return 0;
+                }
+            };
+        })
+        .filter('periodCounter', function () {
+            return function (value) {
+                if (value && typeof value === 'string') {
+                    return value.trim().split(".").length;
+                } else {
+                    return 0;
+                }
+            };
+        })
+        .controller('WordCountController', function ($scope) {
+            $scope.notesNode = {
+                text: ''
+            };
+          
+        });
+
+
+    /* Regex to allow Letters only
+    =================================================-->*/
+
+    $(".letters-only").on("input", function () {
+        var regexp = /[\d]/g;
+
+        if ($(this).val().match(regexp)) {
+            $(this).val($(this).val().replace(regexp, ''));
+        }
+    });
+
+
+</script>
+
+
+    <script>
+        $('.sort-table').click(function (e) {
+            e.preventDefault();                    // prevent default behaviour
+
+            var sortAsc = $(this).hasClass('asc'), // ASC or DESC sorting
+                $table = $('#resultsTable'),        // cache target table
+                $rows = $('tbody > tr', $table); // cache rows in target table body
+
+            $rows.sort(function (a, b) {
+
+                var keyA = $('td', a).text();
+                var keyB = $('td', b).text();
+
+                if (sortAsc) {
+                    return (keyA > keyB) ? 1 : 0;  // A bigger than B, sorting ascending
+                } else {
+                    return (keyA < keyB) ? 1 : 0;  // B bigger than A, sorting descending
+                }
+            });
+
+            $rows.each(function (index, row) {
+                $table.append(row);                  // append rows after sort
+            });
+        });
+
+
+        function process() {
+
+            entered = $('#TextEntryPanel').val();
+            lines = entered.split(/\n/);
+            opttext = ""; for (var i in lines) {
+                opttext += lines[i];
+            }
+
+            $('#resultsTable tbody').append("<tr> <td>" + opttext + "</td> </tr>");
+        }
+
+        $(document).ready(function () {
+            $("#process").bind('click', process);
+        });
+
+
+        /* Check Amount of words entered
+=================================================-->*/
+        $("#process").click(function () {
+            var words = $('#TextEntryPanel').val().split(' ');
+            if (words.length < 5) {
+                alert('You need to enter at least 5 words and no more than 500');
+            }
+            else {
+                alert('You have entered the minimum 5 words, you may not exceed 500');
+            }
+        });
+
+
+</script>
+
+
+
+<!-- End Document
+================================================== -->
+</body>
+</html>

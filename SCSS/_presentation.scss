@@ -1,0 +1,69 @@
+/*Basics - Fonts, Colours and Centering*/
+$font-stack:Helvetica, sans-serif;
+$primary-color: #00F;
+$secondary-color: #CCC;
+$standard-color: #000;
+$error-color: #F00;
+$center:center;
+$autoMargin:0 auto;
+$displayBlock:block;
+
+
+
+/*Radius - use of mixin for easy updating*/
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+
+/*tags*/
+body {
+  font: 100% $font-stack;
+  color: $standard-color;
+  margin:$autoMargin;
+  text-align:$center;
+}
+
+header {
+	h1,h2{font: $font-stack}
+	h1{color: $primary-color}
+	h2{color: $secondary-color}
+	ul{list-style:none}
+	li{color:$error-color}
+}
+
+strong{color:$error-color}
+
+/*Links*/
+a:link{color:$primary-color}
+a:hover{color:$secondary-color}
+
+/*Inputs and Controls*/
+textarea 
+{ @include border-radius(1em); border:1px $primary-color solid;margin:$autoMargin;display:$displayBlock;
+        padding:1em;
+        /*Transition*/
+        -webkit-transition: -webkit-box-shadow 0.5s ease-out;;
+        -moz-transition: -moz-box-shadow 0.5s ease-out;
+        -o-transition: box-shadow 0.5s ease-out;
+}
+textarea:hover{
+  /*Gives blue glow around edge of box on hover*/
+       -moz-box-shadow: 0px 0px 1em #09f;
+        -webkit-box-shadow: 0px 0px 1em #09f;
+        box-shadow: 0px 0px 1em #09f;
+}
+button{color: $primary-color;@include border-radius(1em);}
+
+/*IDs*/
+#resultsTable{
+    thead{font-weight:700}
+    tbody{}
+    tr{}
+    th,td{padding:.5em;border:.1em $secondary-color solid;}
+  width:20em;
+  margin:$autoMargin;width:auto;border-color:$primary-color;text-align:$center;
+}
